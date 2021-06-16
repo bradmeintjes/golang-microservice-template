@@ -10,7 +10,7 @@ import (
 	"sample-microservice-v2/internal/repository/postgres"
 	userStorage "sample-microservice-v2/internal/repository/postgres/user"
 	"sample-microservice-v2/internal/transport/http"
-	"sample-microservice-v2/internal/transport/http/user"
+	userHandler "sample-microservice-v2/internal/transport/http/user"
 	userUsecase "sample-microservice-v2/internal/usecase/user"
 )
 
@@ -28,7 +28,7 @@ func main() {
 	rUser := userStorage.NewRepository(p)
 	sUser := userService.NewService(rUser, nil)
 	uUser := userUsecase.NewUsecase(sUser)
-	hUser := user.NewHandler(uUser)
+	hUser := userHandler.NewHandler(uUser)
 
 	srv := http.NewServer(c.HTTP)
 	srv.MountRoutes(hUser)
