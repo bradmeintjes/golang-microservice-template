@@ -32,7 +32,7 @@ func (s Server) MountRoutes(handlers ...Handler) {
 	}
 }
 
-func (s Server) Listen() {
+func (s Server) Run() {
 	addr := fmt.Sprintf("%s:%d", s.conf.Host, s.conf.Port)
 	log.Fatalln(http.ListenAndServe(addr, s.mux))
 }

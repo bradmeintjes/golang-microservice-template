@@ -3,8 +3,6 @@ package main
 import (
 	"log"
 
-	"github.com/caarlos0/env/v6"
-
 	"sample-microservice-v2/internal/config"
 	userService "sample-microservice-v2/internal/domain/user"
 	"sample-microservice-v2/internal/repository/postgres"
@@ -15,7 +13,7 @@ import (
 )
 
 func main() {
-	c, err := conf()
+	c, err := config.Parse()
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -30,12 +28,7 @@ func main() {
 	uUser := userUsecase.NewUsecase(sUser)
 	hUser := userHandler.NewHandler(uUser)
 
-	srv := http.NewServer(c.HTTP)
-	srv.MountRoutes(hUser)
-	srv.Listen()
-}
-
-func conf() (config.Config, error) {
-	var c config.Config
-	return c, env.Parse(&c)
+	s := http.NewServer(c.HTTP)
+	s.MountRoutes(hUser)
+	s.Run()
 }

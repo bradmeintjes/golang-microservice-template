@@ -1,8 +1,17 @@
 package config
 
+import (
+	"github.com/caarlos0/env/v6"
+)
+
 type Config struct {
 	HTTP     HTTP
 	Postgres Postgres
+}
+
+func Parse() (Config, error) {
+	var c Config
+	return c, env.Parse(&c)
 }
 
 type HTTP struct {

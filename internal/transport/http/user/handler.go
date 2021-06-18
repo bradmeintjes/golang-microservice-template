@@ -34,7 +34,6 @@ func (h Handler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	uD := user.User{
-		ID:   u.ID,
 		Name: u.Name,
 	}
 
