@@ -6,17 +6,16 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"sample-microservice-v2/internal/domain/user"
-	userUsecase "sample-microservice-v2/internal/usecase/user"
+	"webservice-template/internal/domain/user"
 )
 
 type Handler struct {
-	userUsecase userUsecase.Usecase
+	userSvc user.Service
 }
 
-func NewHandler(userUsecase userUsecase.Usecase) Handler {
+func NewHandler(userSvc user.Service) Handler {
 	return Handler{
-		userUsecase: userUsecase,
+		userSvc: userSvc,
 	}
 }
 
@@ -37,7 +36,7 @@ func (h Handler) Create(w http.ResponseWriter, r *http.Request) {
 		Name: u.Name,
 	}
 
-	if err := h.userUsecase.Create(uD); err != nil {
+	if err := h.userSvc.Create(uD); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

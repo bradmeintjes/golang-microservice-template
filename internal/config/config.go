@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/caarlos0/env/v6"
+	env "github.com/Netflix/go-env"
 )
 
 type Config struct {
@@ -11,19 +11,20 @@ type Config struct {
 
 func Parse() (Config, error) {
 	var c Config
-	return c, env.Parse(&c)
+	_, err := env.UnmarshalFromEnviron(&c)
+	return c, err
 }
 
 type HTTP struct {
-	Host string `env:"HTTP_HOST,required" envDefault:"localhost"`
-	Port int    `env:"HTTP_PORT,required" envDefault:"8080"`
+	Host string `env:"HTTP_HOST,default=localhost"`
+	Port int    `env:"HTTP_PORT,default=8080"`
 }
 
 type Postgres struct {
-	DBName   string `env:"POSTGRES_DBNAME,required" envDefault:"postgres"`
-	Host     string `env:"POSTGRES_HOST,required" envDefault:"localhost"`
-	Port     int    `env:"POSTGRES_PORT,required" envDefault:"5432"`
-	User     string `env:"POSTGRES_USER,required" envDefault:"postgres"`
-	Password string `env:"POSTGRES_PASSWORD,required" envDefault:"pass"`
-	SSL      string `env:"POSTGRES_SSL,required" envDefault:"disable"`
+	DBName   string `env:"POSTGRES_DBNAME,required=true"`
+	Host     string `env:"POSTGRES_HOST,required=true"`
+	Port     int    `env:"POSTGRES_PORT,default=5432"`
+	User     string `env:"POSTGRES_USER,required=true"`
+	Password string `env:"POSTGRES_PASSWORD,required=true"`
+	SSL      string `env:"POSTGRES_SSL,default=true"`
 }

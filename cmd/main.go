@@ -3,13 +3,12 @@ package main
 import (
 	"log"
 
-	"sample-microservice-v2/internal/config"
-	userService "sample-microservice-v2/internal/domain/user"
-	"sample-microservice-v2/internal/repository/postgres"
-	userStorage "sample-microservice-v2/internal/repository/postgres/user"
-	"sample-microservice-v2/internal/transport/http"
-	userHandler "sample-microservice-v2/internal/transport/http/user"
-	userUsecase "sample-microservice-v2/internal/usecase/user"
+	"webservice-template/internal/config"
+	userService "webservice-template/internal/domain/user"
+	"webservice-template/internal/repository/postgres"
+	userStorage "webservice-template/internal/repository/postgres/user"
+	"webservice-template/internal/transport/http"
+	userHandler "webservice-template/internal/transport/http/user"
 )
 
 func main() {
@@ -25,10 +24,12 @@ func main() {
 
 	rUser := userStorage.NewRepository(p)
 	sUser := userService.NewService(rUser, nil)
-	uUser := userUsecase.NewUsecase(sUser)
-	hUser := userHandler.NewHandler(uUser)
+	hUser := userHandler.NewHandler(sUser)
 
 	s := http.NewServer(c.HTTP)
 	s.MountRoutes(hUser)
-	s.Run()
+
+	if err = s.Serve(); err != nil {
+		log.Fatalln(err)
+	}
 }

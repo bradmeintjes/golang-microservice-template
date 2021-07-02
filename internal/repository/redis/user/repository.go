@@ -1,7 +1,7 @@
 package user
 
 import (
-	"sample-microservice-v2/internal/domain/user"
+	"webservice-template/internal/domain/user"
 )
 
 type Repository struct{}

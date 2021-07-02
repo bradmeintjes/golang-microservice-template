@@ -1,0 +1,8 @@
+#! /bin/sh
+
+POSTGRES_DBNAME=dev         \
+POSTGRES_HOST=localhost     \
+POSTGRES_USER=postgres      \
+POSTGRES_PASSWORD=pass      \
+POSTGRES_SSL=false          \
+go run cmd/main.go
