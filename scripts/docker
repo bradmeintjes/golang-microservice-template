@@ -1,0 +1,13 @@
+#! /bin/sh
+
+docker build -t webservice-template .
+
+docker run                              \
+    --rm                                \
+    --env POSTGRES_DBNAME=dev           \
+    --env POSTGRES_HOST=localhost       \
+    --env POSTGRES_USER=postgres        \
+    --env POSTGRES_PASSWORD=pass        \
+    --env POSTGRES_SSL=disable          \
+    -p 8080:8080                        \
+webservice-template
