@@ -1,7 +1,7 @@
 #! /bin/sh
 
 POSTGRES_DBNAME=dev         \
-POSTGRES_HOST=localhost     \
+POSTGRES_HOST=localhosts     \
 POSTGRES_USER=postgres      \
 POSTGRES_PASSWORD=pass      \
 POSTGRES_SSL=false          \

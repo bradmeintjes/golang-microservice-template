@@ -1,33 +1,36 @@
 package main
 
 import (
+	"context"
 	"log"
 
 	"webservice-template/internal/config"
 	userService "webservice-template/internal/domain/user"
 	"webservice-template/internal/repository/postgres"
-	userStorage "webservice-template/internal/repository/postgres/user"
+	userRepo "webservice-template/internal/repository/postgres/user"
 	"webservice-template/internal/transport/http"
 	userHandler "webservice-template/internal/transport/http/user"
 )
 
 func main() {
+
 	c, err := config.Parse()
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	p, err := postgres.NewConn(c.Postgres)
+	p, err := postgres.NewConn(context.Background(), c.Postgres)
 	if err != nil {
 		log.Fatalln(err)
 	}
+	defer p.Close()
 
-	rUser := userStorage.NewRepository(p)
-	sUser := userService.NewService(rUser, nil)
-	hUser := userHandler.NewHandler(sUser)
+	repo := userRepo.NewRepository(p)
+	svc := userService.NewService(repo, nil)
+	handler := userHandler.NewHandler(svc)
 
 	s := http.NewServer(c.HTTP)
-	s.MountRoutes(hUser)
+	s.MountRoutes(handler)
 
 	if err = s.Serve(); err != nil {
 		log.Fatalln(err)

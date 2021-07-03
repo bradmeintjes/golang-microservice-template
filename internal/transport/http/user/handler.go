@@ -2,6 +2,7 @@ package user
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -22,6 +23,7 @@ func NewHandler(userSvc user.Service) Handler {
 func (h Handler) Router() chi.Router {
 	r := chi.NewRouter()
 	r.Post("/user", h.Create)
+	r.Get("/users", h.All)
 	return r
 }
 
@@ -37,6 +39,25 @@ func (h Handler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := h.userSvc.Create(uD); err != nil {
+		log.Printf("%e", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
+func (h Handler) All(w http.ResponseWriter, r *http.Request) {
+	usrs, err := h.userSvc.All()
+	if err != nil {
+		log.Printf("%e", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	err = json.NewEncoder(w).Encode(&usrs)
+	if err != nil {
+		log.Printf("%e", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

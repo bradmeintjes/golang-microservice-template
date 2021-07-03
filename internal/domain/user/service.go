@@ -7,14 +7,14 @@ import (
 )
 
 type Service struct {
-	storager Storager
-	cacher   Cacher
+	storage Storage
+	cacher  Cacher
 }
 
-func NewService(storager Storager, cacher Cacher) Service {
+func NewService(storage Storage, cacher Cacher) Service {
 	return Service{
-		storager: storager,
-		cacher:   cacher,
+		storage: storage,
+		cacher:  cacher,
 	}
 }
 
@@ -22,5 +22,9 @@ func (s Service) Create(user User) error {
 	user.ID = uuid.New().String()
 	user.CreatedAt = time.Now()
 
-	return s.storager.Store(user)
+	return s.storage.Store(user)
+}
+
+func (s Service) All() ([]User, error) {
+	return s.storage.All()
 }

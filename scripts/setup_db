@@ -1,0 +1,8 @@
+docker run \
+    --rm \
+    --name test_pg \
+    -e POSTGRES_PASSWORD=pass \
+    --mount type=bind,source="$(pwd)"/scripts/data/,target=/docker-entrypoint-initdb.d/ \
+    -p 5432:5432 \
+    postgres
+

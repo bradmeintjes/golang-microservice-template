@@ -1,7 +1,8 @@
 package user
 
-type Storager interface {
+type Storage interface {
 	Store(user User) error
+	All() ([]User, error)
 }
 
 type Cacher interface {

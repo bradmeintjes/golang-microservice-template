@@ -26,5 +26,5 @@ type Postgres struct {
 	Port     int    `env:"POSTGRES_PORT,default=5432"`
 	User     string `env:"POSTGRES_USER,required=true"`
 	Password string `env:"POSTGRES_PASSWORD,required=true"`
-	SSL      string `env:"POSTGRES_SSL,default=true"`
+	SSL      string `env:"POSTGRES_SSL,default=enabled"`
 }
